@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:37 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/28 22:19:16 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/28 23:03:51 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,19 @@ typedef struct s_pipex
 }				t_pipex;
 
 /*Parent Functions*/
-void	call_exit(int status, t_pipex pipes, int needs_print);
-void	initialise_pipes(t_pipex *pipes, int ac, char **av, char **env);
+void	call_exit(int status, t_pipex pipex, int needs_print);
+void	initialise_pipes(t_pipex *pipex, int ac, char **av, char **env);
 int		print_error_message(int status);
 
 /*Children Functions*/
-void	child(t_pipex pipes);
-int		duplicate_fds(t_pipex pipes);
-int		find_closed_quotes(t_pipex pipes);
-void	identify_the_command(t_pipex *pipes);
+void	child(t_pipex pipex);
+int		duplicate_fds(t_pipex pipex);
+int		find_closed_quotes(t_pipex pipex);
+void	identify_the_command(t_pipex *pipex);
 
 /*Here_doc Functions*/
-void	create_temp(t_pipex	*here_doc, char **av);
-void	commence_here_doc(int ac, char **av, char **env);
+void	create_infile(t_pipex *here_doc, char **av);
+void	commence_here_doc(t_pipex *pipex, int ac, char **av, char **env);
 void	initialise_here_doc(t_pipex *here_doc, int ac, char **av, char **env);
 
 //	Exit Codes:

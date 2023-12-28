@@ -6,13 +6,13 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:02:53 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/28 21:57:10 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/28 23:05:06 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-int	find_closed_quotes(t_pipex pipes)
+int	find_closed_quotes(t_pipex pipex)
 {
 	int		single_qoutes;
 	int		double_qoutes;
@@ -20,7 +20,7 @@ int	find_closed_quotes(t_pipex pipes)
 
 	single_qoutes = 0;
 	double_qoutes = 0;
-	cmd = *(pipes.argv);
+	cmd = *(pipex.argv);
 	while (*cmd)
 	{
 		if (*cmd == '\'')
@@ -33,68 +33,68 @@ int	find_closed_quotes(t_pipex pipes)
 	return (1);
 }
 
-int	duplicate_fds(t_pipex pipes)
+int	duplicate_fds(t_pipex pipex)
 {
-	if (pipes.cmd_count == pipes.argc)
-		if (dup2(pipes.input, STDIN_FILENO) < 0)
+	if (pipex.cmd_count == pipex.argc)
+		if (dup2(pipex.input, STDIN_FILENO) < 0)
 			return (10);
-	if (pipes.cmd_count < pipes.argc)
-		if (dup2(pipes.pipe_read_store, STDIN_FILENO) < 0)
+	if (pipex.cmd_count < pipex.argc)
+		if (dup2(pipex.pipe_read_store, STDIN_FILENO) < 0)
 			return (10);
-	if (pipes.cmd_count != 1)
-		if (dup2(*(pipes.pipedes + 1), STDOUT_FILENO) < 0)
+	if (pipex.cmd_count != 1)
+		if (dup2(*(pipex.pipedes + 1), STDOUT_FILENO) < 0)
 			return (10);
-	if (pipes.cmd_count == 1)
-		if (dup2(pipes.output, STDOUT_FILENO) < 0)
+	if (pipex.cmd_count == 1)
+		if (dup2(pipex.output, STDOUT_FILENO) < 0)
 			return (10);
-	close(pipes.input);
-	close(pipes.output);
-	if (pipes.pipe_read_store > 0)
-		close(pipes.pipe_read_store);
-	close(*pipes.pipedes);
-	close(*(pipes.pipedes + 1));
+	close(pipex.input);
+	close(pipex.output);
+	if (pipex.pipe_read_store > 0)
+		close(pipex.pipe_read_store);
+	close(*pipex.pipedes);
+	close(*(pipex.pipedes + 1));
 	return (0);
 }
 
-void	identify_the_command(t_pipex *pipes)
+void	identify_the_command(t_pipex *pipex)
 {
 	char	**paths;
 
-	paths = pipes->paths;
+	paths = pipex->paths;
 	while (*paths)
 	{
-		pipes->cmd_path = ft_strjoin(*paths, *pipes->cmd_args);
-		if (!pipes->cmd_path)
-			call_exit(11, *pipes, 1);
-		if (!access(pipes->cmd_path, X_OK))
+		pipex->cmd_path = ft_strjoin(*paths, *pipex->cmd_args);
+		if (!pipex->cmd_path)
+			call_exit(11, *pipex, 1);
+		if (!access(pipex->cmd_path, X_OK))
 			return ;
-		free(pipes->cmd_path);
-		pipes->cmd_path = NULL;
+		free(pipex->cmd_path);
+		pipex->cmd_path = NULL;
 		paths++;
 	}
-	call_exit(12, *pipes, 1);
+	call_exit(12, *pipex, 1);
 }
 
-void	child(t_pipex pipes)
+void	child(t_pipex pipex)
 {
 	int	word_count;
 
-	if (!find_closed_quotes(pipes))
-		call_exit(7, pipes, 1);
-	pipes.cmd_arg_count = word_counter(*pipes.argv, ' ');
-	word_count = pipes.cmd_arg_count;
-	pipes.cmd_args = ft_split(*pipes.argv, ' ');
-	if (!pipes.cmd_args)
-		call_exit(8, pipes, 1);
+	if (!find_closed_quotes(pipex))
+		call_exit(7, pipex, 1);
+	pipex.cmd_arg_count = word_counter(*pipex.argv, ' ');
+	word_count = pipex.cmd_arg_count;
+	pipex.cmd_args = ft_split(*pipex.argv, ' ');
+	if (!pipex.cmd_args)
+		call_exit(8, pipex, 1);
 	while (word_count--)
 	{
-		*(pipes.cmd_args + word_count)
-			= ft_strtrim(*(pipes.cmd_args + word_count), "\"\'", 1);
-		if (!*(pipes.cmd_args + word_count))
-			call_exit(9, pipes, 1);
+		*(pipex.cmd_args + word_count)
+			= ft_strtrim(*(pipex.cmd_args + word_count), "\"\'", 1);
+		if (!*(pipex.cmd_args + word_count))
+			call_exit(9, pipex, 1);
 	}
-	identify_the_command(&pipes);
-	if (duplicate_fds(pipes))
-		call_exit(11, pipes, 1);
-	execve(pipes.cmd_path, pipes.cmd_args, pipes.envp);
+	identify_the_command(&pipex);
+	if (duplicate_fds(pipex))
+		call_exit(11, pipex, 1);
+	execve(pipex.cmd_path, pipex.cmd_args, pipex.envp);
 }
