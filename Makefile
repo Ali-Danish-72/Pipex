@@ -13,7 +13,7 @@ LIBFT_DIR = ./libft/
 LIBFT = $(LIBFT_DIR)libft.a
 HEADERS = ./
 SRCS_DIR = ./sources/
-SRCS =	pipex.c children_functions.c
+SRCS =	pipex.c children_functions.c here_doc.c
 SRCS_PATH = $(addprefix $(SRCS_DIR), $(SRCS))
 OBJS_DIR = ./objects/
 OBJS = $(SRCS:%.c=%.o)
@@ -22,7 +22,7 @@ OBJS_PATH = $(addprefix $(OBJS_DIR), $(OBJS))
 all: $(NAME)
 
 $(NAME): $(OBJS_DIR) $(OBJS_PATH)
-	@make -s -C $(LIBFT_DIR) printf strings
+	@make -s -C $(LIBFT_DIR)
 	@$(CC) $(CFLAGS) $(OBJS_PATH) $(LIBFT)  -o $(NAME)
 	@echo "$(BLUE)PROGRAM $(GREEN)CREATED: $(CYAN)pipex$(RESET)"
 

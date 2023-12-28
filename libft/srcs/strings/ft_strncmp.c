@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 20:56:39 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/26 20:22:02 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/28 22:18:15 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strncmp(char const *string1, char const *string2, size_t characters)
 {
-	if (!characters)
+	if (!string1 || !characters)
 		return (0);
 	while (characters && *string1 && *string2 && *string1++ == *string2++)
 		characters--;

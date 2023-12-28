@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:37 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/27 21:40:36 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/28 22:19:16 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_pipex
 	char	**cmd_args;
 	char	*cmd_path;
 	char	**envp;
+	char	*in_text;
 	char	**paths;
 	int		argc;
 	int		child_status;
@@ -34,19 +35,24 @@ typedef struct s_pipex
 	int		pipedes[2];
 	int		pipe_read_store;
 	pid_t	pid_child;
+	size_t	limiter;
 }				t_pipex;
 
-/*Parent related functions*/
-void	call_exit(int status, t_pipex pipes, int is_child);
-void	check_for_here_doc(int ac, char **av, char **env);
-void	initialise_pipes(t_pipex *something, int ac, char **av, char **env);
-void	print_error_message(int status);
+/*Parent Functions*/
+void	call_exit(int status, t_pipex pipes, int needs_print);
+void	initialise_pipes(t_pipex *pipes, int ac, char **av, char **env);
+int		print_error_message(int status);
 
-/*Children related functions*/
+/*Children Functions*/
 void	child(t_pipex pipes);
 int		duplicate_fds(t_pipex pipes);
 int		find_closed_quotes(t_pipex pipes);
 void	identify_the_command(t_pipex *pipes);
+
+/*Here_doc Functions*/
+void	create_temp(t_pipex	*here_doc, char **av);
+void	commence_here_doc(int ac, char **av, char **env);
+void	initialise_here_doc(t_pipex *here_doc, int ac, char **av, char **env);
 
 //	Exit Codes:
 //	0 = Successful completion of the program.
@@ -62,5 +68,9 @@ void	identify_the_command(t_pipex *pipes);
 //	10 = Duplication of the fd failed.
 //	11 = Malloc while searching for the command failed.
 //	12 = Command not found.
+//	13 = Insufficient arguments for the here_doc bonus.
+//	14 = Error while opening/creating the here_doc temp file.
+//	15 = Error while opening/creating the here_doc output file.
+//	16 = Error while opening the here_doc temp file for reading.
 
 #endif

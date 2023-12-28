@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 18:29:00 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/20 14:19:53 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/28 22:26:06 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*get_next_line(int fd)
 	char	*store;
 	char	*line;
 
-	store = malloc(INT32_MAX);
+	store = malloc(1000);
 	if (!store || fd < 0)
 		return (free(store), NULL);
 	line = store;

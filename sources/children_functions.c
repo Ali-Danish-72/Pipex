@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:02:53 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/28 17:11:12 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/28 21:57:10 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	find_closed_quotes(t_pipex pipes)
 
 int	duplicate_fds(t_pipex pipes)
 {
-	if (pipes.cmd_count == pipes.argc - 3)
+	if (pipes.cmd_count == pipes.argc)
 		if (dup2(pipes.input, STDIN_FILENO) < 0)
 			return (10);
-	if (pipes.cmd_count < pipes.argc - 3)
+	if (pipes.cmd_count < pipes.argc)
 		if (dup2(pipes.pipe_read_store, STDIN_FILENO) < 0)
 			return (10);
 	if (pipes.cmd_count != 1)
@@ -66,7 +66,7 @@ void	identify_the_command(t_pipex *pipes)
 		pipes->cmd_path = ft_strjoin(*paths, *pipes->cmd_args);
 		if (!pipes->cmd_path)
 			call_exit(11, *pipes, 1);
-		if (!access(pipes->cmd_path, F_OK))
+		if (!access(pipes->cmd_path, X_OK))
 			return ;
 		free(pipes->cmd_path);
 		pipes->cmd_path = NULL;
