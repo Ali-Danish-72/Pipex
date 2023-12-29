@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:37 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/29 15:41:10 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/29 16:13:49 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	identify_the_command(t_pipex *pipex);
 
 /*Here_doc Functions*/
 void	create_infile(t_pipex *here_doc, char **av);
-void	initialise_here_doc(t_pipex *here_doc, int ac, char **av, char **env);
+void	initialise_here_doc(t_pipex *here_doc, int ac, char **av);
 
 //	Exit Codes:
 //	0 = Successful completion of the program.
