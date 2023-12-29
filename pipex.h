@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:37 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/28 23:03:51 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/29 15:41:10 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ typedef struct s_pipex
 	int		input;
 	int		output;
 	int		path_counter;
-	int		pipedes[2];
+	int		pipefds[2];
 	int		pipe_read_store;
 	pid_t	pid_child;
-	size_t	limiter;
+	size_t	limiter_length;
 }				t_pipex;
 
 /*Parent Functions*/
 void	call_exit(int status, t_pipex pipex, int needs_print);
-void	initialise_pipes(t_pipex *pipex, int ac, char **av, char **env);
+void	initialise_pipex(t_pipex *pipex, int ac, char **av, char **env);
 int		print_error_message(int status);
 
 /*Children Functions*/
@@ -51,7 +51,6 @@ void	identify_the_command(t_pipex *pipex);
 
 /*Here_doc Functions*/
 void	create_infile(t_pipex *here_doc, char **av);
-void	commence_here_doc(t_pipex *pipex, int ac, char **av, char **env);
 void	initialise_here_doc(t_pipex *here_doc, int ac, char **av, char **env);
 
 //	Exit Codes:

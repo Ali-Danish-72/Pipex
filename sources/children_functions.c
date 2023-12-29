@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:02:53 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/28 23:05:06 by mdanish          ###   ########.fr       */
+/*   Updated: 2023/12/29 15:50:14 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	duplicate_fds(t_pipex pipex)
 		if (dup2(pipex.pipe_read_store, STDIN_FILENO) < 0)
 			return (10);
 	if (pipex.cmd_count != 1)
-		if (dup2(*(pipex.pipedes + 1), STDOUT_FILENO) < 0)
+		if (dup2(*(pipex.pipefds + 1), STDOUT_FILENO) < 0)
 			return (10);
 	if (pipex.cmd_count == 1)
 		if (dup2(pipex.output, STDOUT_FILENO) < 0)
@@ -51,8 +51,8 @@ int	duplicate_fds(t_pipex pipex)
 	close(pipex.output);
 	if (pipex.pipe_read_store > 0)
 		close(pipex.pipe_read_store);
-	close(*pipex.pipedes);
-	close(*(pipex.pipedes + 1));
+	close(*pipex.pipefds);
+	close(*(pipex.pipefds + 1));
 	return (0);
 }
 
