@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:19 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/29 17:08:10 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/01/11 21:10:00 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	initialise_here_doc(t_pipex *pipex, int ac, char **av)
 		call_exit(15, *pipex, 1);
 	pipex->limiter_length = ft_strlen(*(av + 2)) + 1;
 	pipex->in_text = get_next_line(0);
-	while (ft_strncmp(pipex->in_text, *(av + 2), pipex->limiter_length))
+	while (ft_strncmp(pipex->in_text, *(av + 2), pipex->limiter_length) != 10)
 	{
 		ft_printf(pipex->input, "%s", pipex->in_text);
 		free(pipex->in_text);
