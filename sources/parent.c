@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:19 by mdanish           #+#    #+#             */
-/*   Updated: 2024/01/11 21:10:00 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/01/12 16:13:36 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ void	initialise_pipes(t_pipex *pipex, int ac, char **av, char **env)
 	pipex->cmd_count = ac - 2;
 	pipex->argc = ac - 3;
 	pipex->argv = av;
-	pipex->input = open(*av, O_RDONLY);
+	pipex->input = open(*av, 0);
 	if (pipex->input < 0)
 		call_exit(2, *pipex, 1);
-	pipex->output = open(*(av + ac - 2), O_CREAT | O_TRUNC | O_WRONLY, 644);
+	pipex->output = open(*(av + ac - 2), 1537, 644);
 	if (pipex->output < 0)
 		call_exit(3, *pipex, 1);
 }
@@ -94,10 +94,10 @@ void	initialise_here_doc(t_pipex *pipex, int ac, char **av)
 	pipex->argv = av + 2;
 	pipex->argc = ac - 4;
 	pipex->cmd_count = ac - 3;
-	pipex->input = open("temp.txt", O_CREAT | O_APPEND | O_RDWR, 777);
+	pipex->input = open("temp.txt", 1545, 777);
 	if (pipex->input < 0)
 		call_exit(14, *pipex, 1);
-	pipex->output = open(*(av + --ac), 1089, 644);
+	pipex->output = open(*(av + --ac), 521, 644);
 	if (pipex->output < 0)
 		call_exit(15, *pipex, 1);
 	pipex->limiter_length = ft_strlen(*(av + 2)) + 1;
@@ -109,7 +109,7 @@ void	initialise_here_doc(t_pipex *pipex, int ac, char **av)
 		pipex->in_text = get_next_line(0);
 	}
 	close(pipex->input);
-	pipex->input = open("temp.txt", O_RDONLY);
+	pipex->input = open("temp.txt", 0);
 	if (pipex->input < 0)
 		call_exit(16, *pipex, 1);
 }
@@ -136,7 +136,7 @@ int	main(int ac, char **av, char **env)
 		if (pipex.pipe_read_store > 0)
 			close(pipex.pipe_read_store);
 		pipex.pipe_read_store = *pipex.pipefds;
-		waitpid(pipex.pid_child, &pipex.child_status, 0);
 	}
+	waitpid(pipex.pid_child, &pipex.child_status, 0);
 	call_exit(WEXITSTATUS(pipex.child_status), pipex, 0);
 }

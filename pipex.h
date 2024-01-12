@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:37 by mdanish           #+#    #+#             */
-/*   Updated: 2023/12/29 16:13:49 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/01/11 18:31:44 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,33 @@ typedef struct s_pipex
 	size_t	limiter_length;
 }				t_pipex;
 
-/*Parent Functions*/
+/*		Parent Functions	*/
 void	call_exit(int status, t_pipex pipex, int needs_print);
 void	initialise_pipex(t_pipex *pipex, int ac, char **av, char **env);
 int		print_error_message(int status);
 
-/*Children Functions*/
+/*		Children Functions	*/
 void	child(t_pipex pipex);
 int		duplicate_fds(t_pipex pipex);
 int		find_closed_quotes(t_pipex pipex);
 void	identify_the_command(t_pipex *pipex);
 
-/*Here_doc Functions*/
+/*		Here_doc Functions	*/
 void	create_infile(t_pipex *here_doc, char **av);
 void	initialise_here_doc(t_pipex *here_doc, int ac, char **av);
+
+//	Open Flags:
+//	O_RDONLY == 0;
+//	O_WRONLY == 1;
+//	O_RDWR == 2;
+//	O_APPEND == 8;
+//	O_CREAT == 512;
+//	O_TRUNC == 1024;
+//
+//	0 = Read Only.
+//	1537 = Write Only, Create and Truncate.
+//	1545 = Write Only, Append, Create and Truncate.
+//	521 = Write Only, Append and Create.
 
 //	Exit Codes:
 //	0 = Successful completion of the program.
