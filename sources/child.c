@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:02:53 by mdanish           #+#    #+#             */
-/*   Updated: 2024/12/29 15:50:14 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:00:53 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,25 @@ void	identify_the_command(t_pipex *pipex)
 {
 	char	**paths;
 
-	paths = pipex->paths;
-	while (*paths)
+	if (*pipex->cmd_args)
 	{
-		pipex->cmd_path = ft_strjoin(*paths, *pipex->cmd_args);
-		if (!pipex->cmd_path)
-			call_exit(11, *pipex, 1);
-		if (!access(pipex->cmd_path, X_OK))
+		if (!access(*pipex->cmd_args, X_OK))
+		{
+			pipex->cmd_path = *pipex->cmd_args;
 			return ;
-		free(pipex->cmd_path);
-		pipex->cmd_path = NULL;
-		paths++;
+		}
+		paths = pipex->paths;
+		while (*paths)
+		{
+			pipex->cmd_path = ft_strjoin(*paths, *pipex->cmd_args);
+			if (!pipex->cmd_path)
+				call_exit(11, *pipex, 1);
+			if (!access(pipex->cmd_path, X_OK))
+				return ;
+			free(pipex->cmd_path);
+			pipex->cmd_path = NULL;
+			paths++;
+		}
 	}
 	call_exit(12, *pipex, 1);
 }
