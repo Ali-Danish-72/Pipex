@@ -3,7 +3,7 @@
 ###############################################################################
 NAME = pipex
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g3
 RESET=\033[0m
 RED=\033[1;31m
 GREEN=\033[1;32m

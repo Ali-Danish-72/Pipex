@@ -2,3 +2,12 @@
 hello
       6       6      36
       5       5      26
+Makefile$
+input.txt$
+libft$
+objects$
+output.txt$
+pipex$
+pipex.h$
+sources$
+temp.txt$

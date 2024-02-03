@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:02:53 by mdanish           #+#    #+#             */
-/*   Updated: 2024/02/02 16:00:53 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/02/03 19:16:57 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	identify_the_command(t_pipex *pipex)
 {
 	char	**paths;
 
-	if (*pipex->cmd_args)
+	if (*pipex->cmd_args && pipex->paths)
 	{
 		if (!access(*pipex->cmd_args, X_OK))
 		{
