@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 15:21:19 by mdanish           #+#    #+#             */
-/*   Updated: 2024/02/03 14:39:45 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/02/04 20:54:40 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_next_line(int fd);
 /*****************************************************************************/
 void	free_split(char **split, size_t word_count);
 char	**ft_split(char const *source, char delimiters);
-char	*ft_strjoin(char const *string1, char const *string2);
+char	*ft_strjoin(char const *string1, char const *string2, int is_path);
 char	*ft_strjoin_free(char const *string1, char const *string2, int flag);
 size_t	ft_strlcpy(char *destination, char const*source, size_t destsize);
 size_t	ft_strlen(char const *string);

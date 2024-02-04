@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:37 by mdanish           #+#    #+#             */
-/*   Updated: 2024/02/03 21:35:46 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/02/04 21:35:14 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_pipex
 	char	*cmd_path;
 	char	**envp;
 	char	*in_text;
+	char	*limiter;
 	char	**paths;
 	int		argc;
 	int		child_status;
@@ -48,10 +49,11 @@ typedef struct s_pipex
 	int		pipe_read_store;
 	pid_t	pid_child;
 	size_t	limiter_length;
-}				t_pipex;
+}			t_pipex;
 
 /*		Parent Functions	*/
 void	call_exit(int status, t_pipex pipex, int needs_print);
+void	initialise_constants(t_pipex *pipex, char **env);
 void	initialise_here_doc(t_pipex *here_doc, int ac, char **av);
 void	initialise_pipex(t_pipex *pipex, int ac, char **av, char **env);
 int		print_error_message(int status);

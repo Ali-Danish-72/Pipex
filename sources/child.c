@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:02:53 by mdanish           #+#    #+#             */
-/*   Updated: 2024/02/03 19:16:57 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/02/04 21:34:36 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	identify_the_command(t_pipex *pipex)
 		paths = pipex->paths;
 		while (*paths)
 		{
-			pipex->cmd_path = ft_strjoin(*paths, *pipex->cmd_args);
+			pipex->cmd_path = ft_strjoin(*paths, *pipex->cmd_args, 1);
 			if (!pipex->cmd_path)
 				call_exit(11, *pipex, 1);
 			if (!access(pipex->cmd_path, X_OK))
@@ -105,4 +105,29 @@ void	child(t_pipex pipex)
 	if (duplicate_fds(pipex))
 		call_exit(11, pipex, 1);
 	execve(pipex.cmd_path, pipex.cmd_args, pipex.envp);
+}
+
+int	main(int ac, char **av, char **env)
+{
+	t_pipex	pipex;
+
+	if (ac < 5)
+		return (print_error_message(1));
+	initialise_pipex(&pipex, ac, av + 1, env);
+	while (--pipex.cmd_count && pipex.argv++)
+	{
+		if (pipe(pipex.pipefds))
+			call_exit(5, pipex, 1);
+		pipex.pid_child = fork();
+		if (pipex.pid_child < 0)
+			call_exit(6, pipex, 1);
+		if (!pipex.pid_child)
+			child(pipex);
+		close(*(pipex.pipefds + 1));
+		if (pipex.pipe_read_store > 0)
+			close(pipex.pipe_read_store);
+		pipex.pipe_read_store = *pipex.pipefds;
+	}
+	waitpid(pipex.pid_child, &pipex.child_status, 0);
+	call_exit(WEXITSTATUS(pipex.child_status), pipex, 0);
 }
