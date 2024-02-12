@@ -47,7 +47,7 @@ $(PRINTF_OBJS): %.o: %.c
 #                                  STRINGS                                    #
 ###############################################################################
 STRINGS_DIR = $(SRC_PATH)strings/
-STRINGS_FILES = ft_split.c ft_strjoin.c ft_strlcpy.c ft_strlen.c ft_strncmp.c ft_strtrim.c ft_substr.c
+STRINGS_FILES = ft_split.c ft_strchr.c ft_strjoin.c ft_strlcpy.c ft_strlen.c ft_strncmp.c ft_strtrim.c ft_substr.c
 STRINGS_SRCS = $(addprefix $(STRINGS_DIR), $(STRINGS_FILES))
 STRINGS_OBJS = $(STRINGS_SRCS:.c=.o)
 

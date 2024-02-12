@@ -6,11 +6,34 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:02:53 by mdanish           #+#    #+#             */
-/*   Updated: 2024/02/04 21:34:36 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/02/12 15:43:44 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
+
+int	print_error_message(int status)
+{
+	if (status == 1)
+		write(2, "Use this:\n./pipex file1 cmd1 cmd2 file2\n", 40);
+	else if (status == 4)
+		print(strerror(errno), ". Splitting the path failed.\n");
+	else if (status == 7)
+		write(2, "Open quotes detected in the command or its arguments\n", 53);
+	else if (status == 8)
+		print(strerror(errno), ". Parsing of the command failed.\n");
+	else if (status == 9)
+		print(strerror(errno), ". Trimming the qoutations failed.\n");
+	else if (status == 11)
+		print(strerror(errno), ". Search for the command failed.\n");
+	else if (status == 12)
+		write(2, "Command not found.\n", 19);
+	else if (status == 13)
+		write(2, "Use this:\n./pipex here_doc LIMITER cmd cmd1 file\n", 49);
+	else if (status)
+		print(strerror(errno), "\n");
+	return (status);
+}
 
 int	find_closed_quotes(t_pipex pipex)
 {
@@ -60,14 +83,15 @@ void	identify_the_command(t_pipex *pipex)
 {
 	char	**paths;
 
-	if (*pipex->cmd_args && pipex->paths)
+	paths = pipex->paths;
+	if (*pipex->cmd_args && ft_strchr(*pipex->cmd_args, '/') && \
+		!access(*pipex->cmd_args, X_OK))
 	{
-		if (!access(*pipex->cmd_args, X_OK))
-		{
-			pipex->cmd_path = *pipex->cmd_args;
-			return ;
-		}
-		paths = pipex->paths;
+		pipex->cmd_path = *pipex->cmd_args;
+		return ;
+	}
+	else if (*pipex->cmd_args && !ft_strchr(*pipex->cmd_args, '/') && paths)
+	{
 		while (*paths)
 		{
 			pipex->cmd_path = ft_strjoin(*paths, *pipex->cmd_args, 1);
@@ -105,29 +129,4 @@ void	child(t_pipex pipex)
 	if (duplicate_fds(pipex))
 		call_exit(11, pipex, 1);
 	execve(pipex.cmd_path, pipex.cmd_args, pipex.envp);
-}
-
-int	main(int ac, char **av, char **env)
-{
-	t_pipex	pipex;
-
-	if (ac < 5)
-		return (print_error_message(1));
-	initialise_pipex(&pipex, ac, av + 1, env);
-	while (--pipex.cmd_count && pipex.argv++)
-	{
-		if (pipe(pipex.pipefds))
-			call_exit(5, pipex, 1);
-		pipex.pid_child = fork();
-		if (pipex.pid_child < 0)
-			call_exit(6, pipex, 1);
-		if (!pipex.pid_child)
-			child(pipex);
-		close(*(pipex.pipefds + 1));
-		if (pipex.pipe_read_store > 0)
-			close(pipex.pipe_read_store);
-		pipex.pipe_read_store = *pipex.pipefds;
-	}
-	waitpid(pipex.pid_child, &pipex.child_status, 0);
-	call_exit(WEXITSTATUS(pipex.child_status), pipex, 0);
 }
