@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 19:02:53 by mdanish           #+#    #+#             */
-/*   Updated: 2024/02/12 15:43:44 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/04/17 13:34:52 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,26 @@ int	find_closed_quotes(t_pipex pipex)
 	return (1);
 }
 
-int	duplicate_fds(t_pipex pipex)
+void	duplicate_fds(t_pipex pipex)
 {
 	if (pipex.cmd_count == pipex.argc)
 		if (dup2(pipex.input, STDIN_FILENO) < 0)
-			return (10);
+			call_exit(10, pipex, 1);
 	if (pipex.cmd_count < pipex.argc)
 		if (dup2(pipex.pipe_read_store, STDIN_FILENO) < 0)
-			return (10);
+			call_exit(10, pipex, 1);
 	if (pipex.cmd_count != 1)
 		if (dup2(*(pipex.pipefds + 1), STDOUT_FILENO) < 0)
-			return (10);
+			call_exit(10, pipex, 1);
 	if (pipex.cmd_count == 1)
 		if (dup2(pipex.output, STDOUT_FILENO) < 0)
-			return (10);
+			call_exit(10, pipex, 1);
 	close(pipex.input);
 	close(pipex.output);
 	if (pipex.pipe_read_store > 0)
 		close(pipex.pipe_read_store);
 	close(*pipex.pipefds);
 	close(*(pipex.pipefds + 1));
-	return (0);
 }
 
 void	identify_the_command(t_pipex *pipex)
@@ -125,8 +124,7 @@ void	child(t_pipex pipex)
 		if (!*(pipex.cmd_args + word_count))
 			call_exit(9, pipex, 1);
 	}
+	duplicate_fds(pipex);
 	identify_the_command(&pipex);
-	if (duplicate_fds(pipex))
-		call_exit(11, pipex, 1);
 	execve(pipex.cmd_path, pipex.cmd_args, pipex.envp);
 }

@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:37 by mdanish           #+#    #+#             */
-/*   Updated: 2024/02/04 21:35:14 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/04/17 12:36:13 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@
 # include "libft/libft.h"
 
 /*		MacOS Definitions		*/
-# define INFILE 0
-# define HERE_DOC 1545
-# define OUTFILE 1537
-# define BONUS_OUTFILE 521
+// # define INFILE 0
+// # define HERE_DOC 1545
+// # define OUTFILE 1537
+// # define BONUS_OUTFILE 521
 
 /*		Linux Definitions		*/
-// # define INFILE 0
-// # define HERE_DOC 3137
-// # define OUTFILE 2113
-// # define BONUS_OUTFILE 1089
+# define INFILE 0
+# define HERE_DOC 3137
+# define OUTFILE 2113
+# define BONUS_OUTFILE 1089
 
 typedef struct s_pipex
 {
@@ -60,7 +60,7 @@ int		print_error_message(int status);
 
 /*		Children Functions	*/
 void	child(t_pipex pipex);
-int		duplicate_fds(t_pipex pipex);
+void	duplicate_fds(t_pipex pipex);
 int		find_closed_quotes(t_pipex pipex);
 void	identify_the_command(t_pipex *pipex);
 

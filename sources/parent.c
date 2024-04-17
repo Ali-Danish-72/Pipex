@@ -6,7 +6,7 @@
 /*   By: mdanish <mdanish@student.42abudhabi.ae>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:55:19 by mdanish           #+#    #+#             */
-/*   Updated: 2024/02/12 15:43:36 by mdanish          ###   ########.fr       */
+/*   Updated: 2024/04/17 13:36:08 by mdanish          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	initialise_here_doc(t_pipex *pipex, int ac, char **av)
 	pipex->input = open("temp.txt", HERE_DOC, 777);
 	if (pipex->input < 0)
 		call_exit(14, *pipex, 1);
-	pipex->output = open(*(av + --ac), BONUS_OUTFILE, 644);
+	pipex->output = open(*(av + ac - 1), BONUS_OUTFILE, 644);
 	if (pipex->output < 0)
 		call_exit(15, *pipex, 1);
 	pipex->limiter = ft_strjoin(*(av + 2), NULL, 0);
@@ -93,7 +93,8 @@ void	initialise_here_doc(t_pipex *pipex, int ac, char **av)
 		free(pipex->in_text);
 		write(1, ">", 1);
 		pipex->in_text = get_next_line(0);
-		write(pipex->input, pipex->in_text, ft_strlen(pipex->in_text));
+		if (ft_strncmp(pipex->in_text, pipex->limiter, pipex->limiter_length))
+			write(pipex->input, pipex->in_text, ft_strlen(pipex->in_text));
 	}
 	close(pipex->input);
 	pipex->input = open("temp.txt", INFILE);
@@ -111,8 +112,9 @@ int	main(int ac, char **av, char **env)
 	if (ac < 5)
 		return (print_error_message(1));
 	initialise_pipex(&pipex, ac, av + 1, env);
-	while (--pipex.cmd_count && pipex.argv++)
+	while (--pipex.cmd_count)
 	{
+		pipex.argv++;
 		if (pipe(pipex.pipefds))
 			call_exit(5, pipex, 1);
 		pipex.pid_child = fork();
